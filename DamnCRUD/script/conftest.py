@@ -8,25 +8,25 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 
 
 @pytest.fixture(scope="function")
 def driver():
     """
-    Initialize Firefox WebDriver for each test
+    Initialize Chrome WebDriver for each test
     Automatically cleans up after test completion
     """
-    firefox_options = Options()
+    chrome_options = Options()
     # Enable headless mode in CI/CD environments
     if os.getenv('CI') or os.getenv('GITHUB_ACTIONS'):
-        firefox_options.add_argument("--headless")
-        firefox_options.add_argument("--no-sandbox")
-        firefox_options.add_argument("--disable-dev-shm-usage")
-        # Explicitly set Firefox binary path for snap installation
-        firefox_options.binary_location = "/snap/bin/firefox"
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-dev-shm-usage")
+        chrome_options.add_argument("--disable-gpu")
     
-    driver = webdriver.Firefox(options=firefox_options)
+    driver = webdriver.Chrome(options=chrome_options)
     driver.maximize_window()
     driver.implicitly_wait(10)
     

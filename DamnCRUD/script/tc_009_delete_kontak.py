@@ -5,7 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.alert import Alert
 import time
 
-driver = webdriver.Firefox()
+driver = webdriver.Chrome()
 driver.maximize_window()
 
 try:

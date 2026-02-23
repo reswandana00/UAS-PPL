@@ -27,19 +27,11 @@ jobs:
 
       - name: Install system dependencies
         run: |
-          # Install Firefox using snap (more reliable in GitHub Actions)
-          sudo snap install firefox
-          # Create symlink for firefox binary
-          sudo ln -s /snap/bin/firefox /usr/local/bin/firefox
-          firefox --version
-          # Install Geckodriver
-          wget -q https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux64.tar.gz
-          tar -xzf geckodriver-v0.34.0-linux64.tar.gz
-          sudo mv geckodriver /usr/local/bin/
-          sudo chmod +x /usr/local/bin/geckodriver
-          geckodriver --version
-          # Set DISPLAY for headless operation
-          export DISPLAY=:99
+          # Install Chrome and Chromedriver
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+          google-chrome --version
+          # Chromedriver is auto-managed by Selenium
 
       - name: Install Python dependencies
         working-directory: ./DamnCRUD/script
