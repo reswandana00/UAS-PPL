@@ -23,6 +23,8 @@ def driver():
         firefox_options.add_argument("--headless")
         firefox_options.add_argument("--no-sandbox")
         firefox_options.add_argument("--disable-dev-shm-usage")
+        # Explicitly set Firefox binary path for snap installation
+        firefox_options.binary_location = "/snap/bin/firefox"
     
     driver = webdriver.Firefox(options=firefox_options)
     driver.maximize_window()

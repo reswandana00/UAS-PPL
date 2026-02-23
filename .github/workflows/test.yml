@@ -27,13 +27,10 @@ jobs:
 
       - name: Install system dependencies
         run: |
-          sudo apt-get update
-          # Install Firefox ESR from Mozilla repository
-          sudo install -d -m 0755 /etc/apt/keyrings
-          wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- | sudo tee /etc/apt/keyrings/packages.mozilla.org.asc > /dev/null
-          echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" | sudo tee -a /etc/apt/sources.list.d/mozilla.list > /dev/null
-          sudo apt-get update
-          sudo apt-get install -y firefox
+          # Install Firefox using snap (more reliable in GitHub Actions)
+          sudo snap install firefox
+          # Create symlink for firefox binary
+          sudo ln -s /snap/bin/firefox /usr/local/bin/firefox
           firefox --version
           # Install Geckodriver
           wget -q https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux64.tar.gz
@@ -41,6 +38,8 @@ jobs:
           sudo mv geckodriver /usr/local/bin/
           sudo chmod +x /usr/local/bin/geckodriver
           geckodriver --version
+          # Set DISPLAY for headless operation
+          export DISPLAY=:99
 
       - name: Install Python dependencies
         working-directory: ./DamnCRUD/script
