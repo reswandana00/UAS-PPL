@@ -43,7 +43,13 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y firefox firefox-geckodriver
+          sudo apt-get install -y firefox wget
+          # Install Geckodriver
+          wget -q https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux64.tar.gz
+          tar -xzf geckodriver-v0.34.0-linux64.tar.gz
+          sudo mv geckodriver /usr/local/bin/
+          sudo chmod +x /usr/local/bin/geckodriver
+          geckodriver --version
 
       - name: Install Python dependencies
         working-directory: ./DamnCRUD/script
@@ -54,11 +60,11 @@ jobs:
       - name: Start application with Docker Compose
         working-directory: ./DamnCRUD
         run: |
-          docker-compose up -d
+          docker compose up -d
           echo "Waiting for application to be ready..."
           sleep 15
           # Check if application is responding
-          curl -f http://localhost:8080/login.php || (docker-compose logs && exit 1)
+          curl -f http://localhost:8080/login.php || (docker compose logs && exit 1)
 
       - name: Run tests in parallel with Pytest
         working-directory: ./DamnCRUD/script
@@ -90,12 +96,12 @@ jobs:
       - name: Display application logs on failure
         if: failure()
         working-directory: ./DamnCRUD
-        run: docker-compose logs
+        run: docker compose logs
 
       - name: Cleanup
         if: always()
         working-directory: ./DamnCRUD
-        run: docker-compose down -v
+        run: docker compose down -v
 
   test-summary:
     name: Test Summary

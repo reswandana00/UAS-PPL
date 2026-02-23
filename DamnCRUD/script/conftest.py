@@ -18,8 +18,9 @@ def driver():
     Automatically cleans up after test completion
     """
     firefox_options = Options()
-    # Uncomment for headless mode in CI/CD
-    # firefox_options.add_argument("--headless")
+    # Enable headless mode in CI/CD environments
+    if os.getenv('CI') or os.getenv('GITHUB_ACTIONS'):
+        firefox_options.add_argument("--headless")
     
     driver = webdriver.Firefox(options=firefox_options)
     driver.maximize_window()
