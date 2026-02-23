@@ -1,0 +1,40 @@
+services:
+  # Service PHP Apache
+  web:
+    build: .
+    container_name: damncrud-web
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASS=root123
+      - DB_NAME=damncrud
+    networks:
+      - damncrud-network
+
+  # Service MySQL Database
+  db:
+    image: mysql:8.0
+    container_name: damncrud-db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: damncrud
+    volumes:
+      - ./db/damncrud.sql:/docker-entrypoint-initdb.d/damncrud.sql
+      - db-data:/var/lib/mysql
+    networks:
+      - damncrud-network
+
+networks:
+  damncrud-network:
+    driver: bridge
+
+volumes:
+  db-data:

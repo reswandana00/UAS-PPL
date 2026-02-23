@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Selenium
+*.log
+screenshots/
+test-reports/
+
+# Pytest
+.pytest_cache/
+*.pytest_cache/
+report.html
+assets/
+junit.xml
+htmlcov/
+.coverage
+.coverage.*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
